@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://dw6p4jmn8xr5k"]
+
+[ext_resource type="Script" path="res://scripts/bandit.gd" id="BanditScript"]
+
+[sub_resource type="CapsuleShape3D" id="CollisionCapsule"]
+radius = 0.22
+height = 1.75
+
+[sub_resource type="StandardMaterial3D" id="BanditSkinMat"]
+albedo_color = Color(0.75, 0.42, 0.35, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="BanditBodyMat"]
+albedo_color = Color(0.70, 0.10, 0.10, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="BanditLegMat"]
+albedo_color = Color(0.38, 0.06, 0.06, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="BodyMesh"]
+material = SubResource("BanditBodyMat")
+size = Vector3(0.4, 0.55, 0.25)
+
+[sub_resource type="SphereMesh" id="HeadMesh"]
+material = SubResource("BanditSkinMat")
+radius = 0.2
+height = 0.4
+
+[sub_resource type="CylinderMesh" id="ArmMesh"]
+material = SubResource("BanditSkinMat")
+top_radius = 0.06
+bottom_radius = 0.06
+height = 0.45
+
+[sub_resource type="CylinderMesh" id="LegMesh"]
+material = SubResource("BanditLegMat")
+top_radius = 0.08
+bottom_radius = 0.07
+height = 0.5
+
+[node name="Bandit" type="CharacterBody3D"]
+script = ExtResource("BanditScript")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+shape = SubResource("CollisionCapsule")
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+mesh = SubResource("BodyMesh")
+
+[node name="Head" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47, 0)
+mesh = SubResource("HeadMesh")
+
+[node name="LeftLeg" type="Node3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.5, 0)
+
+[node name="LegMesh" type="MeshInstance3D" parent="Model/LeftLeg"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("LegMesh")
+
+[node name="RightLeg" type="Node3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.5, 0)
+
+[node name="LegMesh" type="MeshInstance3D" parent="Model/RightLeg"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("LegMesh")
+
+[node name="LeftArm" type="Node3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 1.15, 0)
+
+[node name="ArmMesh" type="MeshInstance3D" parent="Model/LeftArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.225, 0)
+mesh = SubResource("ArmMesh")
+
+[node name="RightArm" type="Node3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 1.15, 0)
+
+[node name="ArmMesh" type="MeshInstance3D" parent="Model/RightArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.225, 0)
+mesh = SubResource("ArmMesh")
