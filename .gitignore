@@ -2,11 +2,13 @@
 .import/
 export.cfg
 export_presets.cfg
+*.tmp
 
 # Mono-specific ignores
 .mono/
 data_*/
 mono_crash.*.json
+*.translation
 
 # System/tool-specific ignores
 .DS_Store
@@ -14,3 +16,6 @@ Thumbs.db
 
 # Godot 4 generated cache
 .godot/
+
+# Claude
+.claude/
