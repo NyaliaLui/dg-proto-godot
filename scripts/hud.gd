@@ -5,6 +5,7 @@ var bandits_defeated := 0
 const WIN_COUNT := 5
 
 func _ready() -> void:
+	add_to_group("hud")
 	var left_btn: Button = $BottomLeft/LeftBtn
 	var right_btn: Button = $BottomLeft/RightBtn
 	var jump_btn: Button = $BottomRight/JumpBtn
@@ -24,8 +25,10 @@ func _ready() -> void:
 	if players.size() > 0:
 		players[0].health_changed.connect(_on_health_changed)
 
-	for bandit in get_tree().get_nodes_in_group("enemy"):
-		bandit.defeated.connect(_on_bandit_defeated)
+	$WinPopup/VBox/FacebookBtn.pressed.connect(_on_facebook_pressed)
+	$WinPopup/VBox/RestartBtn.pressed.connect(_on_restart_pressed)
+	$LosePopup/VBox/FacebookBtn.pressed.connect(_on_facebook_pressed)
+	$LosePopup/VBox/RestartBtn.pressed.connect(_on_restart_pressed)
 
 func _on_jump_pressed() -> void:
 	Input.action_press("jump")
@@ -44,7 +47,14 @@ func _on_health_changed(new_hp: int) -> void:
 	if new_hp <= 0:
 		$LosePopup.visible = true
 
-func _on_bandit_defeated() -> void:
+func add_score() -> void:
 	bandits_defeated += 1
+	$ScoreLabel.text = "Score: %d" % bandits_defeated
 	if bandits_defeated >= WIN_COUNT:
 		$WinPopup.visible = true
+
+func _on_facebook_pressed() -> void:
+	OS.shell_open("https://www.facebook.com/profile.php?id=61572357196698")
+
+func _on_restart_pressed() -> void:
+	get_tree().reload_current_scene()

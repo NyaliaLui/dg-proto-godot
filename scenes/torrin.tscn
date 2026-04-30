@@ -48,8 +48,17 @@ roughness = 0.3
 
 [sub_resource type="SphereMesh" id="HotBallMesh"]
 material = SubResource("HotBallMat")
-radius = 0.1
-height = 0.2
+radius = 0.2
+height = 0.4
+
+[sub_resource type="BoxShape3D" id="BodyHurtShape"]
+size = Vector3(0.4, 0.55, 0.25)
+
+[sub_resource type="SphereShape3D" id="HeadHurtShape"]
+radius = 0.2
+
+[sub_resource type="SphereShape3D" id="HotBallHitShape"]
+radius = 0.25
 
 [node name="Torrin" type="CharacterBody3D"]
 script = ExtResource("TorrinScript")
@@ -100,3 +109,19 @@ mesh = SubResource("ArmMesh")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0)
 mesh = SubResource("HotBallMesh")
 visible = false
+
+[node name="BodyArea" type="Area3D" parent="Model/Body"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Model/Body/BodyArea"]
+shape = SubResource("BodyHurtShape")
+
+[node name="HeadArea" type="Area3D" parent="Model/Head"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Model/Head/HeadArea"]
+shape = SubResource("HeadHurtShape")
+
+[node name="HitArea" type="Area3D" parent="Model/RightArm/HotBall"]
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Model/RightArm/HotBall/HitArea"]
+shape = SubResource("HotBallHitShape")
