@@ -7,11 +7,13 @@ const MAX_HP := 25
 const DAMAGE := 5
 
 signal health_changed(new_hp: int)
+signal max_hp_changed(new_max_hp: int)
 
 var is_punching := false
 var walk_phase := 0.0
 var _punch_tween: Tween
 var hp := MAX_HP
+var _max_hp: int = MAX_HP
 var facing_dir := 1.0
 var _damage_cooldown := 0.0
 var _punch_hit_bodies: Array = []
@@ -114,3 +116,11 @@ func take_damage(amount: int) -> void:
 	health_changed.emit(hp)
 	if hp <= 0:
 		queue_free()
+
+
+func add_health_bars(count: int) -> void:
+	var bonus := count * 5
+	_max_hp += bonus
+	hp += bonus
+	max_hp_changed.emit(_max_hp)
+	health_changed.emit(hp)
