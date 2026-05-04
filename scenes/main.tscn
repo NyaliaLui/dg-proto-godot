@@ -1,20 +1,18 @@
-[gd_scene load_steps=24 format=3 uid="uid://c3bq8frdm32ci"]
+[gd_scene format=3 uid="uid://c3bq8frdm32ci"]
 
-[ext_resource type="PackedScene" uid="uid://bc8t3km9pd2q1" path="res://scenes/torrin.tscn" id="TorrinScene"]
+[ext_resource type="Script" uid="uid://d03hse65vfb24" path="res://scripts/background_scroller.gd" id="BkgScrollScript"]
+[ext_resource type="Script" uid="uid://dygq28gf0qi1h" path="res://scripts/camera_follow.gd" id="CameraFollowScript"]
 [ext_resource type="PackedScene" uid="uid://ch5n7wx4ya3b2" path="res://scenes/hud.tscn" id="HUDScene"]
-[ext_resource type="Script" path="res://scripts/spawner.gd" id="SpawnerScript"]
-[ext_resource type="Script" path="res://scripts/camera_follow.gd" id="CameraFollowScript"]
-[ext_resource type="Script" path="res://scripts/wave_manager.gd" id="WaveManagerScript"]
-[ext_resource type="Script" path="res://scripts/background_scroller.gd" id="BkgScrollScript"]
-[ext_resource type="Script" path="res://scripts/platform_scroller.gd" id="PlatformScrollScript"]
+[ext_resource type="Script" uid="uid://b0w674fknsq8w" path="res://scripts/platform_scroller.gd" id="PlatformScrollScript"]
+[ext_resource type="Script" uid="uid://dxe7pa7cub2pn" path="res://scripts/spawner.gd" id="SpawnerScript"]
+[ext_resource type="PackedScene" uid="uid://bc8t3knapd2q1" path="res://scenes/torrin.tscn" id="TorrinScene"]
+[ext_resource type="Script" uid="uid://cipx1ex3ug746" path="res://scripts/wave_manager.gd" id="WaveManagerScript"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.05, 0.28, 0.75, 1)
-sky_horizon_color = Color(0.55, 0.78, 1.0, 1)
-sky_curve = 0.15
+sky_horizon_color = Color(0.55, 0.78, 1, 1)
 ground_bottom_color = Color(0.18, 0.15, 0.1, 1)
-ground_horizon_color = Color(0.55, 0.78, 1.0, 1)
-ground_curve = 0.02
+ground_horizon_color = Color(0.55, 0.78, 1, 1)
 
 [sub_resource type="Sky" id="Sky_1"]
 sky_material = SubResource("ProceduralSkyMaterial_1")
@@ -25,26 +23,26 @@ sky = SubResource("Sky_1")
 ambient_light_source = 3
 ambient_light_energy = 0.6
 
+[sub_resource type="StandardMaterial3D" id="GroundMaterial"]
+albedo_color = Color(0.3, 0.5, 0.18, 1)
+roughness = 0.95
+
+[sub_resource type="PlaneMesh" id="GroundPlaneMesh"]
+material = SubResource("GroundMaterial")
+size = Vector2(500, 30)
+
+[sub_resource type="WorldBoundaryShape3D" id="GroundShape"]
+
 [sub_resource type="StandardMaterial3D" id="PlatformMaterial"]
 albedo_color = Color(0.35, 0.55, 0.25, 1)
 roughness = 0.85
 
 [sub_resource type="BoxMesh" id="BoxMesh_1"]
 material = SubResource("PlatformMaterial")
-size = Vector3(3.0, 0.5, 2.0)
+size = Vector3(3, 0.5, 2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1"]
-size = Vector3(3.0, 0.5, 2.0)
-
-[sub_resource type="StandardMaterial3D" id="GroundMaterial"]
-albedo_color = Color(0.30, 0.50, 0.18, 1)
-roughness = 0.95
-
-[sub_resource type="PlaneMesh" id="GroundPlaneMesh"]
-material = SubResource("GroundMaterial")
-size = Vector2(500.0, 30.0)
-
-[sub_resource type="WorldBoundaryShape3D" id="GroundShape"]
+size = Vector3(3, 0.5, 2)
 
 [sub_resource type="StandardMaterial3D" id="MountainMaterial"]
 albedo_color = Color(0.42, 0.48, 0.58, 1)
@@ -54,11 +52,9 @@ roughness = 0.9
 material = SubResource("MountainMaterial")
 top_radius = 0.0
 bottom_radius = 1.0
-height = 2.0
 
 [sub_resource type="StandardMaterial3D" id="TrunkMaterial"]
 albedo_color = Color(0.45, 0.28, 0.12, 1)
-roughness = 1.0
 
 [sub_resource type="CylinderMesh" id="TrunkMesh"]
 material = SubResource("TrunkMaterial")
@@ -76,174 +72,173 @@ radius = 1.0
 height = 2.0
 
 [sub_resource type="StandardMaterial3D" id="CloudMaterial"]
-albedo_color = Color(0.97, 0.97, 1.0, 1)
-roughness = 1.0
+albedo_color = Color(0.97, 0.97, 1, 1)
 
 [sub_resource type="SphereMesh" id="CloudMesh"]
 material = SubResource("CloudMaterial")
 radius = 1.0
 height = 1.5
 
-[node name="Main" type="Node3D"]
+[node name="Main" type="Node3D" unique_id=1674277746]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1615129976]
 environment = SubResource("Environment_1")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1200159023]
 transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 5, 0)
 light_color = Color(1, 0.95, 0.85, 1)
 light_energy = 1.8
 shadow_enabled = true
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1246013872]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 12)
 fov = 60.0
 script = ExtResource("CameraFollowScript")
 
-[node name="Ground" type="StaticBody3D" parent="."]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=414749570]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=1360233114]
 mesh = SubResource("GroundPlaneMesh")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1155944328]
 shape = SubResource("GroundShape")
 
-[node name="PlatformManager" type="Node3D" parent="."]
+[node name="PlatformManager" type="Node3D" parent="." unique_id=1053272794]
 script = ExtResource("PlatformScrollScript")
 
-[node name="Platform1" type="StaticBody3D" parent="PlatformManager"]
+[node name="Platform1" type="StaticBody3D" parent="PlatformManager" unique_id=1144906134]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 6, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PlatformManager/Platform1"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlatformManager/Platform1" unique_id=1830243762]
 mesh = SubResource("BoxMesh_1")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlatformManager/Platform1"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlatformManager/Platform1" unique_id=2129222505]
 shape = SubResource("BoxShape3D_1")
 
-[node name="Platform2" type="StaticBody3D" parent="PlatformManager"]
+[node name="Platform2" type="StaticBody3D" parent="PlatformManager" unique_id=793880637]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PlatformManager/Platform2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlatformManager/Platform2" unique_id=2005457632]
 mesh = SubResource("BoxMesh_1")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlatformManager/Platform2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlatformManager/Platform2" unique_id=670258322]
 shape = SubResource("BoxShape3D_1")
 
-[node name="Platform3" type="StaticBody3D" parent="PlatformManager"]
+[node name="Platform3" type="StaticBody3D" parent="PlatformManager" unique_id=1796796118]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 6, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PlatformManager/Platform3"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlatformManager/Platform3" unique_id=733824008]
 mesh = SubResource("BoxMesh_1")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlatformManager/Platform3"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlatformManager/Platform3" unique_id=1592770019]
 shape = SubResource("BoxShape3D_1")
 
-[node name="Background" type="Node3D" parent="."]
+[node name="Background" type="Node3D" parent="." unique_id=1215065353]
 script = ExtResource("BkgScrollScript")
 
-[node name="Mountains" type="Node3D" parent="Background"]
+[node name="Mountains" type="Node3D" parent="Background" unique_id=1623363441]
 
-[node name="Mountain1" type="MeshInstance3D" parent="Background/Mountains"]
+[node name="Mountain1" type="MeshInstance3D" parent="Background/Mountains" unique_id=44119770]
 transform = Transform3D(3, 0, 0, 0, 4, 0, 0, 0, 3, -17, 4, -8)
 mesh = SubResource("MountainMesh")
 
-[node name="Mountain2" type="MeshInstance3D" parent="Background/Mountains"]
+[node name="Mountain2" type="MeshInstance3D" parent="Background/Mountains" unique_id=40045981]
 transform = Transform3D(3.5, 0, 0, 0, 4.5, 0, 0, 0, 3.5, -8, 4.5, -8)
 mesh = SubResource("MountainMesh")
 
-[node name="Mountain3" type="MeshInstance3D" parent="Background/Mountains"]
+[node name="Mountain3" type="MeshInstance3D" parent="Background/Mountains" unique_id=1270295554]
 transform = Transform3D(3, 0, 0, 0, 4, 0, 0, 0, 3, 2, 4, -8)
 mesh = SubResource("MountainMesh")
 
-[node name="Mountain4" type="MeshInstance3D" parent="Background/Mountains"]
+[node name="Mountain4" type="MeshInstance3D" parent="Background/Mountains" unique_id=527203634]
 transform = Transform3D(3, 0, 0, 0, 4, 0, 0, 0, 3, 12, 4, -8)
 mesh = SubResource("MountainMesh")
 
-[node name="Trees" type="Node3D" parent="Background"]
+[node name="Trees" type="Node3D" parent="Background" unique_id=292840302]
 
-[node name="Tree1" type="Node3D" parent="Background/Trees"]
+[node name="Tree1" type="Node3D" parent="Background/Trees" unique_id=1873515081]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -4)
 
-[node name="Trunk" type="MeshInstance3D" parent="Background/Trees/Tree1"]
+[node name="Trunk" type="MeshInstance3D" parent="Background/Trees/Tree1" unique_id=2072964405]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 mesh = SubResource("TrunkMesh")
 
-[node name="Foliage" type="MeshInstance3D" parent="Background/Trees/Tree1"]
+[node name="Foliage" type="MeshInstance3D" parent="Background/Trees/Tree1" unique_id=773372390]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
 mesh = SubResource("FoliageMesh")
 
-[node name="Tree2" type="Node3D" parent="Background/Trees"]
+[node name="Tree2" type="Node3D" parent="Background/Trees" unique_id=1905958778]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
 
-[node name="Trunk" type="MeshInstance3D" parent="Background/Trees/Tree2"]
+[node name="Trunk" type="MeshInstance3D" parent="Background/Trees/Tree2" unique_id=1709728508]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 mesh = SubResource("TrunkMesh")
 
-[node name="Foliage" type="MeshInstance3D" parent="Background/Trees/Tree2"]
+[node name="Foliage" type="MeshInstance3D" parent="Background/Trees/Tree2" unique_id=1339539055]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
 mesh = SubResource("FoliageMesh")
 
-[node name="Tree3" type="Node3D" parent="Background/Trees"]
+[node name="Tree3" type="Node3D" parent="Background/Trees" unique_id=2029877466]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, -4)
 
-[node name="Trunk" type="MeshInstance3D" parent="Background/Trees/Tree3"]
+[node name="Trunk" type="MeshInstance3D" parent="Background/Trees/Tree3" unique_id=97146891]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 mesh = SubResource("TrunkMesh")
 
-[node name="Foliage" type="MeshInstance3D" parent="Background/Trees/Tree3"]
+[node name="Foliage" type="MeshInstance3D" parent="Background/Trees/Tree3" unique_id=1607460714]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
 mesh = SubResource("FoliageMesh")
 
-[node name="Clouds" type="Node3D" parent="Background"]
+[node name="Clouds" type="Node3D" parent="Background" unique_id=175347043]
 
-[node name="Cloud1" type="Node3D" parent="Background/Clouds"]
+[node name="Cloud1" type="Node3D" parent="Background/Clouds" unique_id=228359606]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 12, -6)
 
-[node name="Part1" type="MeshInstance3D" parent="Background/Clouds/Cloud1"]
+[node name="Part1" type="MeshInstance3D" parent="Background/Clouds/Cloud1" unique_id=1636949179]
 transform = Transform3D(1.3, 0, 0, 0, 0.9, 0, 0, 0, 1.3, 0, 0, 0)
 mesh = SubResource("CloudMesh")
 
-[node name="Part2" type="MeshInstance3D" parent="Background/Clouds/Cloud1"]
+[node name="Part2" type="MeshInstance3D" parent="Background/Clouds/Cloud1" unique_id=2129807109]
 transform = Transform3D(0.9, 0, 0, 0, 0.7, 0, 0, 0, 0.9, -1.3, -0.2, 0)
 mesh = SubResource("CloudMesh")
 
-[node name="Part3" type="MeshInstance3D" parent="Background/Clouds/Cloud1"]
+[node name="Part3" type="MeshInstance3D" parent="Background/Clouds/Cloud1" unique_id=1013572590]
 transform = Transform3D(0.85, 0, 0, 0, 0.65, 0, 0, 0, 0.85, 1.2, -0.3, 0)
 mesh = SubResource("CloudMesh")
 
-[node name="Cloud2" type="Node3D" parent="Background/Clouds"]
+[node name="Cloud2" type="Node3D" parent="Background/Clouds" unique_id=1411933673]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 11, -6)
 
-[node name="Part1" type="MeshInstance3D" parent="Background/Clouds/Cloud2"]
+[node name="Part1" type="MeshInstance3D" parent="Background/Clouds/Cloud2" unique_id=59157832]
 transform = Transform3D(1.1, 0, 0, 0, 0.8, 0, 0, 0, 1.1, 0, 0, 0)
 mesh = SubResource("CloudMesh")
 
-[node name="Part2" type="MeshInstance3D" parent="Background/Clouds/Cloud2"]
+[node name="Part2" type="MeshInstance3D" parent="Background/Clouds/Cloud2" unique_id=1196545882]
 transform = Transform3D(0.8, 0, 0, 0, 0.6, 0, 0, 0, 0.8, -1.1, -0.15, 0)
 mesh = SubResource("CloudMesh")
 
-[node name="Part3" type="MeshInstance3D" parent="Background/Clouds/Cloud2"]
+[node name="Part3" type="MeshInstance3D" parent="Background/Clouds/Cloud2" unique_id=1864687605]
 transform = Transform3D(0.75, 0, 0, 0, 0.55, 0, 0, 0, 0.75, 0.95, -0.2, 0)
 mesh = SubResource("CloudMesh")
 
-[node name="Cloud3" type="Node3D" parent="Background/Clouds"]
+[node name="Cloud3" type="Node3D" parent="Background/Clouds" unique_id=1202605912]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 13, -6)
 
-[node name="Part1" type="MeshInstance3D" parent="Background/Clouds/Cloud3"]
+[node name="Part1" type="MeshInstance3D" parent="Background/Clouds/Cloud3" unique_id=837369194]
 transform = Transform3D(1.2, 0, 0, 0, 0.85, 0, 0, 0, 1.2, 0, 0, 0)
 mesh = SubResource("CloudMesh")
 
-[node name="Part2" type="MeshInstance3D" parent="Background/Clouds/Cloud3"]
+[node name="Part2" type="MeshInstance3D" parent="Background/Clouds/Cloud3" unique_id=1938952487]
 transform = Transform3D(0.8, 0, 0, 0, 0.65, 0, 0, 0, 0.8, -1.1, -0.2, 0)
 mesh = SubResource("CloudMesh")
 
-[node name="Torrin" parent="." instance=ExtResource("TorrinScene")]
+[node name="Torrin" parent="." unique_id=25840757 instance=ExtResource("TorrinScene")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
 
-[node name="Spawner" type="Node3D" parent="."]
+[node name="Spawner" type="Node3D" parent="." unique_id=320876063]
 script = ExtResource("SpawnerScript")
 
-[node name="WaveManager" type="Node" parent="."]
+[node name="WaveManager" type="Node" parent="." unique_id=1916923412]
 script = ExtResource("WaveManagerScript")
 
-[node name="HUD" parent="." instance=ExtResource("HUDScene")]
+[node name="HUD" parent="." unique_id=1415338988 instance=ExtResource("HUDScene")]

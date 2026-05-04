@@ -1,64 +1,17 @@
-[gd_scene format=3 uid="uid://bc8t3knapd2q1"]
+[gd_scene format=3 uid="uid://bc8t3knapd2q1" load_steps=6]
 
 [ext_resource type="Script" path="res://scripts/torrin.gd" id="TorrinScript"]
+[ext_resource type="PackedScene" uid="uid://d3q13nknpx60h" path="res://models/JediLowPoly-Rigged.glb" id="JediGLB"]
 
 [sub_resource type="CapsuleShape3D" id="CollisionCapsule"]
 radius = 0.22
 height = 1.75
-
-[sub_resource type="StandardMaterial3D" id="SkinMat"]
-albedo_color = Color(0.91, 0.76, 0.62, 1)
-roughness = 0.8
-
-[sub_resource type="StandardMaterial3D" id="ShirtMat"]
-albedo_color = Color(0.18, 0.38, 0.82, 1)
-roughness = 0.85
-
-[sub_resource type="StandardMaterial3D" id="PantsMat"]
-albedo_color = Color(0.14, 0.14, 0.32, 1)
-roughness = 0.85
-
-[sub_resource type="BoxMesh" id="BodyMesh"]
-material = SubResource("ShirtMat")
-size = Vector3(0.4, 0.55, 0.25)
-
-[sub_resource type="SphereMesh" id="HeadMesh"]
-material = SubResource("SkinMat")
-radius = 0.2
-height = 0.4
-
-[sub_resource type="CylinderMesh" id="ArmMesh"]
-material = SubResource("SkinMat")
-top_radius = 0.06
-bottom_radius = 0.06
-height = 0.45
-
-[sub_resource type="CylinderMesh" id="LegMesh"]
-material = SubResource("PantsMat")
-top_radius = 0.08
-bottom_radius = 0.07
-height = 0.5
-
-[sub_resource type="StandardMaterial3D" id="HotBallMat"]
-albedo_color = Color(1, 0.15, 0.05, 1)
-emission_enabled = true
-emission = Color(1, 0.3, 0.0, 1)
-emission_energy_multiplier = 2.0
-roughness = 0.3
-
-[sub_resource type="SphereMesh" id="HotBallMesh"]
-material = SubResource("HotBallMat")
-radius = 0.2
-height = 0.4
 
 [sub_resource type="BoxShape3D" id="BodyHurtShape"]
 size = Vector3(0.4, 0.55, 0.25)
 
 [sub_resource type="SphereShape3D" id="HeadHurtShape"]
 radius = 0.2
-
-[sub_resource type="SphereShape3D" id="HotBallHitShape"]
-radius = 0.25
 
 [node name="Torrin" type="CharacterBody3D"]
 script = ExtResource("TorrinScript")
@@ -69,59 +22,19 @@ shape = SubResource("CollisionCapsule")
 
 [node name="Model" type="Node3D" parent="."]
 
-[node name="Body" type="MeshInstance3D" parent="Model"]
+[node name="GLBInstance" type="Node3D" parent="Model"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
+
+[node name="JediLowPolyRigged" parent="Model/GLBInstance" instance=ExtResource("JediGLB")]
+
+[node name="BodyArea" type="Area3D" parent="Model"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-mesh = SubResource("BodyMesh")
 
-[node name="Head" type="MeshInstance3D" parent="Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47, 0)
-mesh = SubResource("HeadMesh")
-
-[node name="LeftLeg" type="Node3D" parent="Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.5, 0)
-
-[node name="LegMesh" type="MeshInstance3D" parent="Model/LeftLeg"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
-mesh = SubResource("LegMesh")
-
-[node name="RightLeg" type="Node3D" parent="Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.5, 0)
-
-[node name="LegMesh" type="MeshInstance3D" parent="Model/RightLeg"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
-mesh = SubResource("LegMesh")
-
-[node name="LeftArm" type="Node3D" parent="Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 1.15, 0)
-
-[node name="ArmMesh" type="MeshInstance3D" parent="Model/LeftArm"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.225, 0)
-mesh = SubResource("ArmMesh")
-
-[node name="RightArm" type="Node3D" parent="Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 1.15, 0)
-
-[node name="ArmMesh" type="MeshInstance3D" parent="Model/RightArm"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.225, 0)
-mesh = SubResource("ArmMesh")
-
-[node name="HotBall" type="MeshInstance3D" parent="Model/RightArm"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0)
-mesh = SubResource("HotBallMesh")
-visible = false
-
-[node name="BodyArea" type="Area3D" parent="Model/Body"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Model/Body/BodyArea"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Model/BodyArea"]
 shape = SubResource("BodyHurtShape")
 
-[node name="HeadArea" type="Area3D" parent="Model/Head"]
+[node name="HeadArea" type="Area3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Model/Head/HeadArea"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Model/HeadArea"]
 shape = SubResource("HeadHurtShape")
-
-[node name="HitArea" type="Area3D" parent="Model/RightArm/HotBall"]
-monitoring = false
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Model/RightArm/HotBall/HitArea"]
-shape = SubResource("HotBallHitShape")
